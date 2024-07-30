@@ -36,3 +36,15 @@ Steps:
 5. Open a connection to the database, and store it in a config struct
 6. Create an HTTP handler to create a user
 7. Test the handler with an HTTP client
+
+### 3. API key
+
+1. Add an "api key" column to the users table
+   - Use a new migration file in the sql/schema directory to add a new column to the users table.
+   - Generate a valid default API keys (256-bit hex values) because we already have some users in the database
+2. Create an API key for new users
+   - Update the "create user" SQL query and run `sqlc generate`
+3. Add a new SQL query to get a user by their API key
+4. Run sqlc generate to generate new Go code
+   - Remember: each time you update your queries or schema you'll need to regenerate your Go code with sqlc generate. If you update the schema you'll also need to migrate your database up (and maybe down).
+5. Add an endpoint to return the current user

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/RuxinZ/rssagg/internal/auth"
 	"github.com/RuxinZ/rssagg/internal/database"
 	"github.com/google/uuid"
 )
@@ -19,21 +20,32 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
 	params := parameters{}
 	err := decoder.Decode(&params)
 	if err != nil {
-		respondWithError(w, 400, fmt.Sprintf("Error parsing JSON: %v", err))
+		respondWithError(w, http.StatusBadRequest, fmt.Sprintf("Error parsing JSON: %v", err))
 		return
 	}
 
-	user, err :=apiCfg.DB.CreateUser(r.Context(), database.CreateUserParams{
+	user, err := apiCfg.DB.CreateUser(r.Context(), database.CreateUserParams{
 		ID: uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 		Name: params.Name,
 	})
 	if err != nil {
-		respondWithError(w, 400, fmt.Sprintf("Couldn't create user: %v", err))
+		respondWithError(w, http.StatusBadRequest, fmt.Sprintf("Couldn't create user: %v", err))
 		return
 	}
 
+	respondWithJSON(w, http.StatusCreated, databaseUserToUser(user))
+}
 
+func (apiCfg *apiConfig) handlerGetUser(w http.ResponseWriter, r *http.Request) {
+	apiKey, err := auth.GetAPIKey(r.Header)
+	if err != nil {
+		respondWithError(w, http.StatusForbidden,fmt.Sprintf("Auth error: %v", err) )
+	}
+	user, err := apiCfg.DB.GetUserByAPIKey(r.Context(),apiKey)
+	if err != nil {
+		respondWithError(w, http.StatusNotFound,fmt.Sprintf("Couldn't get user: %v", err) )
+	}
 	respondWithJSON(w, http.StatusOK, databaseUserToUser(user))
 }
