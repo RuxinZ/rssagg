@@ -48,3 +48,7 @@ Steps:
 4. Run sqlc generate to generate new Go code
    - Remember: each time you update your queries or schema you'll need to regenerate your Go code with sqlc generate. If you update the schema you'll also need to migrate your database up (and maybe down).
 5. Add an endpoint to return the current user
+
+### 4. Create feed
+
+1. Create a feeds table
