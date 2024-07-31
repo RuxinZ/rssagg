@@ -53,3 +53,12 @@ Steps:
 
 1. Create a feeds table
 2. Add a query to create feed
+3. Create some authentication middleware
+
+   - Move the logic for authenticating a user from `handlerGetUser` to a newly created `middlewareAuth`
+   - This middleware returns a callback function that accepts standard HTTP request params `w http.ResponseWriter, r *http.Request` and returns a function that we define as type `authedHandler`, `authedHandler` also accepts a `database.User` param
+   - Use the middleware<br>
+     `  v1Router.Get("/users", apiCfg.middlewareAuth(apiCfg.handlerGetUser))    `
+
+4. Add a handler for creating feed
+5.
