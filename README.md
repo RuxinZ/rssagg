@@ -52,3 +52,4 @@ Steps:
 ### 4. Create feed
 
 1. Create a feeds table
+2. Add a query to create feed
