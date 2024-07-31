@@ -61,3 +61,7 @@ Steps:
      `v1Router.Get("/users", apiCfg.middlewareAuth(apiCfg.handlerGetUser))  `
 
 4. Add a handler for creating feed & Endpoint: POST /v1/feeds
+
+### 5. Get all feeds
+
+Create a new endpoint to retrieve all of the feeds in the database. It does not require authentication.
