@@ -65,3 +65,9 @@ Steps:
 ### 5. Get all feeds
 
 Create a new endpoint to retrieve all of the feeds in the database. It does not require authentication.
+
+### 6. Add feed follows
+
+1. feed follow is a many-to-many relationship: a user can follow many feeds, and a feed can be followed by many users. Create a table `feed_follows` to store this relationship.
+2. Create a feed follow
+3. Get all feed follows for an authenticated user
